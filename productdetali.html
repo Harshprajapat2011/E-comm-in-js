@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="mainclass">
+    <div class="leftdiv">
+      <!-- <div class="leftimg">
+        <img
+          src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png" " alt="" onmouseover="getsrc(this)">
+           
+          </div> -->
+        </div>
+        <div class=" middiv">
+        <!-- <div class="boximg">
+                <img src="" alt="">
+            </div> -->
+      </div>
+      <div class="rightdiv">
+        <!-- <div class="rightbox">
+            <h2>Essence Mascara Lash Princess</h2>
+            <p> The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.</p>
+            <h3>$9.99</h3>
+            <button>save cart</button>
+          </div> -->
+      </div>
+    </div>
+
+</body>
+<script>
+
+  let midClass = document.querySelector(".middiv")
+  let leftClass = document.querySelector(".leftdiv")
+  let rightClass = document.querySelector(".rightdiv")
+
+  let getid = () => {
+    getid = JSON.parse(localStorage.getItem("ecomid"))
+    // alert(getid)
+    // console.log("getid",getid)
+
+    fetch(`https://dummyjson.com/products/${getid}`)
+
+      .then((prod) => {
+        // console.log(prod.json());
+        return prod.json()
+      })
+      .then((finalprod) => {
+        console.log(finalprod)
+        // let finalproddata=finalprod;
+        console.log(finalprod);
+
+
+        midClass.innerHTML = `
+     <div class="boximg">
+                <img src=${finalprod.thumbnail} alt="">
+            </div>
+    `
+
+        rightClass.innerHTML = `
+           <div class="rightbox">
+            <h2>${finalprod.title}</h2>
+            <p>${finalprod.description}  </p>
+            <h3>$ ${finalprod.price} </h3>
+            <button>save cart</button>
+          </div>          
+    `
+
+        leftClass.innerHTML = ""
+        let allimages = finalprod.images;
+        // console.log(allimages)
+        allimages.forEach((v) => {
+        leftClass.innerHTML += `
+      <div class="leftimg">
+            <img src=" ${v}" alt="" onmouseover="getsrc(this)">
+           
+          </div>
+    `
+      })
+
+  })
+
+  .catch ((error) => {
+    console.log(error)
+  })
+}
+
+  getid();
+
+
+  getsrc=(oneurl)=>{
+    console.log(oneurl);
+  
+    midClass.innerHTML = `
+     <div class="boximg">
+                <img src=${oneurl.src} alt="">
+            </div>`
+          }  
+</script>
+
+</html>
